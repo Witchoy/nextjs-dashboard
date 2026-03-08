@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import postgres from "postgres";
-import { number, z } from "zod";
+import { z } from "zod";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -34,9 +34,7 @@ export default async function createInvoice(formData: FormData) {
         `;
     } catch(e) {
         console.error(e);
-        return {
-            message: 'Database Error: Failed to Create Invoice.',
-        };
+        throw new Error('DataBase Error: Failed to Create Invoice.');
     }
 
 
@@ -60,9 +58,7 @@ export async function updateInvoice(id: string, formData: FormData) {
         `;
     } catch(e) {
         console.error(e);
-        return {
-            message: 'Database Error: Failed to Update Invoice.',
-        };
+        throw new Error('Database Error: Failed to Update Invoice.');
     }
 
     revalidatePath('/dashboard/invoices');
@@ -76,9 +72,7 @@ export async function deleteInvoice(id: string) {
         `;
     } catch(e) {
         console.error(e);
-        return {
-            message: 'Database Error: Failed to Delete Invoice.',
-        };
+        throw new Error('Database Error: Failed to Delete Invoice.');
     }
 
     revalidatePath('/dashboard/invoices');
