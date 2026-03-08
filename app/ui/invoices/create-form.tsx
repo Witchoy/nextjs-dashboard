@@ -9,7 +9,7 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-import { createInvoice, State} from '@/app/lib/actions';
+import { createInvoice, State } from '@/app/lib/actions';
 import { useActionState } from 'react';
 
 export default function Form({ customers }: { customers: CustomerField[] }) {
@@ -49,8 +49,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                 <p className="mt-2 text-sm text-red-500" key={error}>
                   {error}
                 </p>
-              ))
-            }
+              ))}
           </div>
         </div>
 
@@ -78,8 +77,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                   <p className="mt-2 text-sm text-red-500" key={error}>
                     {error}
                   </p>
-                ))
-              }
+                ))}
             </div>
           </div>
         </div>
@@ -130,15 +128,12 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
                 <p className="mt-2 text-sm text-red-500" key={error}>
                   {error}
                 </p>
-              ))
-            }
+              ))}
           </div>
         </fieldset>
         <div id="field-error" aria-live="polite" aria-atomic="true">
           {state.message && (
-            <p className="mt-2 text-sm text-red-500">
-              {state.message}
-            </p>
+            <p className="mt-2 text-sm text-red-500">{state.message}</p>
           )}
         </div>
       </div>

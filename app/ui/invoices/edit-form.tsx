@@ -20,7 +20,7 @@ export default function EditInvoiceForm({
   customers: CustomerField[];
 }) {
   const initialState: State = { message: null, errors: {} };
-  const updateInvoiceWithId = updateInvoice.bind(null, invoice.id)
+  const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
   const [state, formAction] = useActionState(updateInvoiceWithId, initialState);
 
   return (
@@ -55,8 +55,7 @@ export default function EditInvoiceForm({
                   <p className="mt-2 text-sm text-red-500" key={error}>
                     {error}
                   </p>
-                ))
-              }
+                ))}
             </div>
           </div>
         </div>
@@ -86,8 +85,7 @@ export default function EditInvoiceForm({
                   <p className="mt-2 text-sm text-red-500" key={error}>
                     {error}
                   </p>
-                ))
-              }
+                ))}
             </div>
           </div>
         </div>
@@ -140,15 +138,12 @@ export default function EditInvoiceForm({
                 <p className="mt-2 text-sm text-red-500" key={error}>
                   {error}
                 </p>
-              ))
-            }
+              ))}
           </div>
         </fieldset>
         <div id="field-error" aria-live="polite" aria-atomic="true">
           {state.message && (
-            <p className="mt-2 text-sm text-red-500">
-              {state.message}
-            </p>
+            <p className="mt-2 text-sm text-red-500">{state.message}</p>
           )}
         </div>
       </div>
