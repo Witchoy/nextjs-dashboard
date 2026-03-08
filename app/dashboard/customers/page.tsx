@@ -1,10 +1,10 @@
-import { fetchCustomers, fetchFilteredCustomers } from '@/app/lib/data';
-import { FormattedCustomersTable } from '@/app/lib/definitions';
-import CustomersTable from '@/app/ui/customers/table';
-import { Metadata } from 'next';
+import { fetchCustomers, fetchFilteredCustomers } from "@/app/lib/data";
+import { FormattedCustomersTable } from "@/app/lib/definitions";
+import CustomersTable from "@/app/ui/customers/table";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Customers',
+  title: "Customers",
 };
 
 export default async function Page(props: {
@@ -14,8 +14,8 @@ export default async function Page(props: {
   }>;
 }) {
   const searchParams = await props.searchParams;
-  const query = searchParams?.query || '';
-  
+  const query = searchParams?.query || "";
+
   const customers = await fetchFilteredCustomers(query);
 
   return (

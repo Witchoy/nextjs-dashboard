@@ -1,24 +1,24 @@
-'use server';
+"use server";
 
-import { signIn } from '@/auth';
-import { AuthError } from 'next-auth';
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
-import postgres from 'postgres';
-import { z } from 'zod';
+import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import postgres from "postgres";
+import { z } from "zod";
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 const formSchema = z.object({
   id: z.string(),
   customerId: z.string({
-    invalid_type_error: 'Please select a customer.',
+    invalid_type_error: "Please select a customer.",
   }),
   amount: z.coerce
     .number()
-    .gt(0, { message: 'Please enter an amount greater than $0.' }),
-  status: z.enum(['pending', 'paid'], {
-    message: 'Please select an invoice status.',
+    .gt(0, { message: "Please enter an amount greater than $0." }),
+  status: z.enum(["pending", "paid"], {
+    message: "Please select an invoice status.",
   }),
   date: z.string(),
 });
@@ -37,21 +37,21 @@ export type State = {
 
 export async function createInvoice(prevState: State, formData: FormData) {
   const validateFields = CreateInvoice.safeParse({
-    customerId: formData.get('customerId'),
-    amount: formData.get('amount'),
-    status: formData.get('status'),
+    customerId: formData.get("customerId"),
+    amount: formData.get("amount"),
+    status: formData.get("status"),
   });
 
   if (!validateFields.success) {
     return {
       errors: validateFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Create Invoice.',
+      message: "Missing Fields. Failed to Create Invoice.",
     };
   }
 
   const { customerId, amount, status } = validateFields.data;
   const amountInCents = amount * 100;
-  const date = new Date().toISOString().split('T')[0];
+  const date = new Date().toISOString().split("T")[0];
 
   try {
     await sql`
@@ -60,11 +60,11 @@ export async function createInvoice(prevState: State, formData: FormData) {
         `;
   } catch (e) {
     console.error(e);
-    throw new Error('DataBase Error: Failed to Create Invoice.');
+    throw new Error("DataBase Error: Failed to Create Invoice.");
   }
 
-  revalidatePath('/dashboard/invoices');
-  redirect('/dashboard/invoices');
+  revalidatePath("/dashboard/invoices");
+  redirect("/dashboard/invoices");
 }
 
 export async function updateInvoice(
@@ -73,15 +73,15 @@ export async function updateInvoice(
   formData: FormData
 ) {
   const validateFields = CreateInvoice.safeParse({
-    customerId: formData.get('customerId'),
-    amount: formData.get('amount'),
-    status: formData.get('status'),
+    customerId: formData.get("customerId"),
+    amount: formData.get("amount"),
+    status: formData.get("status"),
   });
 
   if (!validateFields.success) {
     return {
       errors: validateFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Update Invoice.',
+      message: "Missing Fields. Failed to Update Invoice.",
     };
   }
 
@@ -96,11 +96,11 @@ export async function updateInvoice(
         `;
   } catch (e) {
     console.error(e);
-    throw new Error('Database Error: Failed to Update Invoice.');
+    throw new Error("Database Error: Failed to Update Invoice.");
   }
 
-  revalidatePath('/dashboard/invoices');
-  redirect('/dashboard/invoices');
+  revalidatePath("/dashboard/invoices");
+  redirect("/dashboard/invoices");
 }
 
 export async function deleteInvoice(id: string) {
@@ -110,10 +110,10 @@ export async function deleteInvoice(id: string) {
         `;
   } catch (e) {
     console.error(e);
-    throw new Error('Database Error: Failed to Delete Invoice.');
+    throw new Error("Database Error: Failed to Delete Invoice.");
   }
 
-  revalidatePath('/dashboard/invoices');
+  revalidatePath("/dashboard/invoices");
 }
 
 export async function authenticate(
@@ -121,14 +121,14 @@ export async function authenticate(
   formData: FormData
 ) {
   try {
-    await signIn('credentials', formData);
+    await signIn("credentials", formData);
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
-        case 'CredentialsSignin':
-          return 'Invalid credentials.';
+        case "CredentialsSignin":
+          return "Invalid credentials.";
         default:
-          return 'Something went wrong.';
+          return "Something went wrong.";
       }
     }
     throw error;
